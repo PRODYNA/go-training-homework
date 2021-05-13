@@ -5,10 +5,11 @@ import (
 )
 
 const input = "Date,Open,High,Low,Close,Adj Close,Volume\n1998-07-22,63.148163,65.053703,63.148163,64.596451,34.570709,56336\n1998-07-23,65.308174,65.816116,61.750568,61.750568,33.047661,95571"
+const brokenInput = "Date,Open,High,Low,Close,Adj Close,Volume\n198-07-22,63.148163,65.053703,63.148163,64.596451,34.570709,56336\n1998-07-23,65.308174,65.816116,61.750568,61.750568,33.047661,95571"
 
 func TestFromBytes(t *testing.T) {
 
-	sp := fromBytes([]byte(input))
+	sp, _ := fromBytes([]byte(input))
 	if len(sp) != 2 {
 		t.Fatalf("incorrect number of stock prices: %d", len(sp))
 	}
@@ -19,5 +20,14 @@ func TestFromBytes(t *testing.T) {
 
 	if sp[1].close != 33.047661 {
 		t.Fatalf("incorrect closing price: %f", sp[1].close)
+	}
+}
+
+func TestFromBytes_Broken(t *testing.T) {
+
+	_, err := fromBytes([]byte(brokenInput))
+
+	if err == nil {
+		t.Fatalf("error has not been handled")
 	}
 }

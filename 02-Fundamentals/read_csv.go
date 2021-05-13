@@ -22,10 +22,13 @@ func main() {
 		log.Fatal(fmt.Errorf("could not read file: %v", err))
 	}
 
-	fromBytes(b)
+	_, err = fromBytes(b)
+	if err != nil {
+		panic(err)
+	}
 }
 
-func fromBytes(b []byte) []StockPrice {
+func fromBytes(b []byte) ([]StockPrice, error) {
 	// TODO convert bytes to lines
 	// lines := ...
 	// SNIP START
@@ -53,15 +56,15 @@ func fromBytes(b []byte) []StockPrice {
 		// Mon Jan 2 15:04:05 MST 2006
 		t, err := time.Parse("2006-01-02", d)
 		if err != nil {
-			log.Fatal(fmt.Errorf("could not parse date %s: %v", d, err))
+			return nil, fmt.Errorf("could not parse date %s: %v", d, err)
 		}
 		op, err := strconv.ParseFloat(o, 64)
 		if err != nil {
-			log.Fatal(fmt.Errorf("could not parse open %s: %v", o, err))
+			return nil, fmt.Errorf("could not parse open %s: %v", o, err)
 		}
 		cl, err := strconv.ParseFloat(c, 64)
 		if err != nil {
-			log.Fatal(fmt.Errorf("could not parse adjusted close %s: %v", o, err))
+			return nil, fmt.Errorf("could not parse adjusted close %s: %v", o, err)
 		}
 		// SNIP END
 
@@ -78,5 +81,5 @@ func fromBytes(b []byte) []StockPrice {
 		// SNIP END
 	}
 
-	return prices
+	return prices, nil
 }
