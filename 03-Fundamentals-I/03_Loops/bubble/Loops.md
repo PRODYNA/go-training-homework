@@ -8,5 +8,5 @@
 
 ## Tips
 
-Run the tests with "go tests -v ./..." for simple execution of all tests.
+Run the tests with "go test -v ./..." for simple execution of all tests.
 Run the benchmarks with "go test -v ./... -bench=. -benchtime=10000x" for 10k iterations. This takes at least 2 min.
